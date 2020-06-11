@@ -1,5 +1,5 @@
 /* Global Variables */
-const baseUrl = 'api.openweathermap.org/data/2.5/weather?zip=';
+const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const key = '&appid=49652684bf08ec0131207130678a15be';
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -8,10 +8,10 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 document.getElementById('generate').addEventListener('click', postDataAction);
 
 function postDataAction(event){
-    const zipDiv = document.getElementById('zip');
     const feelingsDiv = document.getElementById('feelings');
-    postData('/add' , {date:newDate , zip:zipDiv.value , feeling:feelingsDiv.value})
-    .then(getData())
+    const data = {};
+    getData(data)
+    .then(postData('/add' , {date:newDate , temp:data.main.temp , feeling:feelingsDiv.value}))
     .then(updateUi()); 
 };
 
@@ -22,7 +22,7 @@ const postData = async (url = '', data = {}) =>{
         headers:{
             'Content-Type':'application/json'
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     });
     try{
         console.log(data);
@@ -35,15 +35,14 @@ const postData = async (url = '', data = {}) =>{
 };
 
 
-const getData = async ()=>{
+const getData = async (data)=>{
     const zipDiv = document.getElementById('zip');
-    const urlf = baseUrl + zipDiv.value + key;
-    console.log(urlf);
     const re  = await fetch(baseUrl + zipDiv.value + key);
     try{
-        // const data = await re.json();
-        // console.log(data);
-        // return(data);
+        const returnedData = await re.json();
+        console.log(returnedData.main.temp);
+        data = returnedData;
+        return(returnedData);
     }
     catch(error){
         console.log(error);
@@ -51,6 +50,13 @@ const getData = async ()=>{
 }
 
 
-function updateUi(data){
-console.log(data);
+const updateUi = async ()=>{
+    const response = await fetch('/all');
+    try{
+        const data = await response.json();
+        console.log(data);
+    }
+    catch(error){
+        console.log(error);
+    }
 }
