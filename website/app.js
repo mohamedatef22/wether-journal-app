@@ -9,10 +9,12 @@ document.getElementById('generate').addEventListener('click', postDataAction);
 
 function postDataAction(event){
     const feelingsDiv = document.getElementById('feelings');
-    const data = {};
-    getData(data)
-    .then(postData('/add' , {date:newDate , temp:data.main.temp , feeling:feelingsDiv.value}))
-    .then(updateUi()); 
+    getData()
+    .then(function(data){
+        postData('/add' , {date:newDate , temp: data.main.temp , feeling:feelingsDiv.value});
+    })
+    .then(function(data){
+        updateUi();}); 
 };
 
 const postData = async (url = '', data = {}) =>{
@@ -25,7 +27,6 @@ const postData = async (url = '', data = {}) =>{
         body: JSON.stringify(data)
     });
     try{
-        console.log(data);
         const res = await response.json();
         return res;
     }
@@ -35,13 +36,11 @@ const postData = async (url = '', data = {}) =>{
 };
 
 
-const getData = async (data)=>{
+const getData = async ()=>{
     const zipDiv = document.getElementById('zip');
     const re  = await fetch(baseUrl + zipDiv.value + key);
     try{
         const returnedData = await re.json();
-        console.log(returnedData.main.temp);
-        data = returnedData;
         return(returnedData);
     }
     catch(error){
@@ -54,7 +53,9 @@ const updateUi = async ()=>{
     const response = await fetch('/all');
     try{
         const data = await response.json();
-        console.log(data);
+        document.getElementById('date').innerHTML = "<i class=\"far fa-calendar-alt\"></i>" + data.date;
+        document.getElementById('temp').innerHTML = "<i class=\"fas fa-thermometer-half\"></i>" + data.temp;
+        document.getElementById('content').innerHTML = "<i class=\"far fa-comment-alt\"></i>" + data.feeling;
     }
     catch(error){
         console.log(error);

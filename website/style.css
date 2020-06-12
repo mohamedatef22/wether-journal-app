@@ -26,6 +26,7 @@ body{
 
 #entryHolder{
     padding-top: 30px;
+    padding-bottom: 30px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

@@ -31,15 +31,12 @@ app.post('/add' , postRequest);
 app.get('/all' , getRequest);
 
 function postRequest(req, res){
-    const newData = {date:req.body.date , zip:req.body.zip , feeling:req.body.feeling};
     projectData['date']= req.body.date;
-    projectData['temp'] = req.body.zip;
-    projectData['feeling'] = req.body.feeling;
-    console.log(projectData);    
+    projectData['temp'] = req.body.temp;
+    projectData['feeling'] = req.body.feeling;   
 };
 
 
 function getRequest(req , res){
-    console.log('getrec')
-    res.send(projectData);
+   res.send(projectData);
 }
