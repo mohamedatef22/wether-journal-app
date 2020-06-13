@@ -1,6 +1,6 @@
 /* Global Variables */
 const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const key = '&appid=49652684bf08ec0131207130678a15be';
+const key = '&appid=49652684bf08ec0131207130678a15be&units=imperial';
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
@@ -56,8 +56,18 @@ const updateUi = async ()=>{
         document.getElementById('date').innerHTML = "<i class=\"far fa-calendar-alt\"></i>" + data.date;
         document.getElementById('temp').innerHTML = "<i class=\"fas fa-thermometer-half\"></i>" + data.temp;
         document.getElementById('content').innerHTML = "<i class=\"far fa-comment-alt\"></i>" + data.feeling;
+
+        document.getElementById('date').style.display = "block";
+        document.getElementById('temp').style.display = "block";
+        document.getElementById('content').style.display = "block";
+        document.getElementById('error').style.display = "none";
     }
     catch(error){
+        document.getElementById('error').innerHTML = "<i class=\"fas fa-exclamation-triangle\"></i>" + error;
+        document.getElementById('date').style.display = "none";
+        document.getElementById('temp').style.display = "none";
+        document.getElementById('content').style.display = "none";
+        document.getElementById('error').style.display = "block";
         console.log(error);
     }
 }

@@ -44,7 +44,10 @@ body{
 #content{
     width: 33.33%;
 }
-
+#error{
+    width: 100%;
+    display: none;
+}
 .headline {
 
 }
